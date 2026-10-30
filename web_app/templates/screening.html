@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OA Screening</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 0;
+            color: #1f2937;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 25px 15px;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 35px;
+            padding-left: 12px;
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu li {
+            margin-bottom: 8px;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #4b5563;
+            padding: 12px 14px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .menu a:hover {
+            background: #f3f4f6;
+        }
+
+        .menu a.active {
+            background: #e8f0ff;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .note {
+            background: #eef6ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 8px;
+        }
+
+        .radio-group label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pain-value {
+            font-size: 18px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        input[type="file"] {
+            margin: 15px 0;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f0fdf4;
+            border-radius: 10px;
+            border: 1px solid #bbf7d0;
+        }
+
+        .result h2 {
+            margin-top: 0;
+        }
+
+        .result-card {
+            background: white;
+            padding: 18px;
+            margin-top: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .result-card h3 {
+            margin-top: 0;
+        }
+
+        .risk-level {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .risk-confidence {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .probability {
+            margin: 8px 0;
+        }
+
+        .probability-bar {
+            width: 100%;
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .probability-fill {
+            height: 100%;
+            background: #2563eb;
+        }
+
+        .error {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 8px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #2563eb;
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .warning {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff7ed;
+            border-radius: 8px;
+            color: #9a3412;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            OA Screening
+        </div>
+
+
+        <ul class="menu">
+
+            <li>
+                <a href="/">
+                    Dashboard
+                </a>
+            </li>
+
+
+            <li>
+                <a href="/screening" class="active">
+                    New Screening
+                </a>
+            </li>
+
+
+            <li>
+                <a href="/patients">
+                    Patients
+                </a>
+            </li>
+
+
+            <li>
+                <a href="/history">
+                    Screening History
+                </a>
+            </li>
+
+
+            <li>
+                <a href="/reports">
+                    Reports
+                </a>
+            </li>
+
+
+            <li>
+                <a href="/sensor">
+                    Sensor Device
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+
+        <div class="container">
+
+
+            <h1>
+                New OA Screening
+            </h1>
+
+
+            <div class="note">
+
+                <strong>
+                    AI-Assisted Osteoarthritis Screening
+                </strong>
+
+                <p>
+                    This screening collects patient information, OA-related
+                    symptoms and a knee X-ray for AI-assisted screening.
+                </p>
+
+                <p>
+                    <strong>Important:</strong>
+                    This system is intended for screening support and
+                    not as a final medical diagnosis.
+                </p>
+
+            </div>
+
+
+            <form method="POST" enctype="multipart/form-data">
+
+
+                <!-- ========================= -->
+                <!-- PATIENT REGISTRATION -->
+                <!-- ========================= -->
+
+                <h2>
+                    1. Patient Registration
+                </h2>
+
+
+                <p class="section-description">
+                    Enter the basic patient information.
+                </p>
+
+
+                <div class="form-group">
+
+                    <label for="patient_id">
+                        Patient ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="patient_id"
+                        name="patient_id"
+                        placeholder="Example: OA-001"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="patient_name">
+                        Patient Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="patient_name"
+                        name="patient_name"
+                        placeholder="Enter patient name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="age">
+                        Age
+                    </label>
+
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        min="1"
+                        max="120"
+                        placeholder="Enter age"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Gender
+                    </label>
+
+
+                    <div class="radio-group">
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="Male"
+                                required
+                            >
+                            Male
+                        </label>
+
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="Female"
+                            >
+                            Female
+                        </label>
+
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="Other"
+                            >
+                            Other
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="location">
+                        Location
+                    </label>
+
+                    
+                    <select name="location" required>
+                        <option value="">Select State / Union Territory</option>
+                        <optgroup label="States">
+                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+        <option value="Assam">Assam</option>
+        <option value="Bihar">Bihar</option>
+        <option value="Chhattisgarh">Chhattisgarh</option>
+        <option value="Goa">Goa</option>
+        <option value="Gujarat">Gujarat</option>
+        <option value="Haryana">Haryana</option>
+        <option value="Himachal Pradesh">Himachal Pradesh</option>
+        <option value="Jharkhand">Jharkhand</option>
+        <option value="Karnataka">Karnataka</option>
+        <option value="Kerala">Kerala</option>
+        <option value="Madhya Pradesh">Madhya Pradesh</option>
+        <option value="Maharashtra">Maharashtra</option>
+        <option value="Manipur">Manipur</option>
+        <option value="Meghalaya">Meghalaya</option>
+        <option value="Mizoram">Mizoram</option>
+        <option value="Nagaland">Nagaland</option>
+        <option value="Odisha">Odisha</option>
+        <option value="Punjab">Punjab</option>
+        <option value="Rajasthan">Rajasthan</option>
+        <option value="Sikkim">Sikkim</option>
+        <option value="Tamil Nadu">Tamil Nadu</option>
+        <option value="Telangana">Telangana</option>
+        <option value="Tripura">Tripura</option>
+        <option value="Uttar Pradesh">Uttar Pradesh</option>
+        <option value="Uttarakhand">Uttarakhand</option>
+        <option value="West Bengal">West Bengal</option>
+    </optgroup>
+
+    <optgroup label="Union Territories">
+        <option value="Andaman and Nicobar Islands">
+            Andaman and Nicobar Islands
+        </option>
+
+        <option value="Chandigarh">
+            Chandigarh
+        </option>
+
+        <option value="Dadra and Nagar Haveli and Daman and Diu">
+            Dadra and Nagar Haveli and Daman and Diu
+        </option>
+
+        <option value="Delhi">
+            Delhi
+        </option>
+
+        <option value="Jammu and Kashmir">
+            Jammu and Kashmir
+        </option>
+
+        <option value="Ladakh">
+            Ladakh
+        </option>
+
+        <option value="Lakshadweep">
+            Lakshadweep
+        </option>
+
+        <option value="Puducherry">
+            Puducherry
+        </option>
+    </optgroup>
+
+</select>
+
+                </div>
+
+
+                <!-- ========================= -->
+                <!-- OA QUESTIONNAIRE -->
+                <!-- ========================= -->
+
+                <h2>
+                    2. OA Symptom Questionnaire
+                </h2>
+
+
+                <p class="section-description">
+                    Please provide information about the patient's
+                    knee-related symptoms.
+                </p>
+
+
+                <!-- PAIN SCORE -->
+
+                <div class="form-group">
+
+                    <label for="pain_score">
+
+                        Knee Pain Score (0–10)
+
+                        <span
+                            id="painValue"
+                            class="pain-value"
+                        >
+                            0
+                        </span>
+
+                    </label>
+
+
+                    <input
+                        type="range"
+                        id="pain_score"
+                        name="pain_score"
+                        min="0"
+                        max="10"
+                        value="0"
+                        oninput="document.getElementById('painValue').innerText = this.value"
+                    >
+
+                </div>
+
+
+                <!-- MORNING STIFFNESS -->
+
+                <div class="form-group">
+
+                    <label>
+                        Morning Stiffness
+                    </label>
+
+
+                    <div class="radio-group">
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="morning_stiffness"
+                                value="Yes"
+                                required
+                            >
+
+                            Yes
+
+                        </label>
+
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="morning_stiffness"
+                                value="No"
+                            >
+
+                            No
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- WALKING -->
+
+                <div class="form-group">
+
+                    <label>
+                        Difficulty Walking
+                    </label>
+
+
+                    <div class="radio-group">
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="walking_difficulty"
+                                value="Yes"
+                                required
+                            >
+
+                            Yes
+
+                        </label>
+
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="walking_difficulty"
+                                value="No"
+                            >
+
+                            No
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STAIRS -->
+
+                <div class="form-group">
+
+                    <label>
+                        Difficulty Climbing Stairs
+                    </label>
+
+
+                    <div class="radio-group">
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="stairs_difficulty"
+                                value="Yes"
+                                required
+                            >
+
+                            Yes
+
+                        </label>
+
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="stairs_difficulty"
+                                value="No"
+                            >
+
+                            No
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SWELLING -->
+
+                <div class="form-group">
+
+                    <label>
+                        Knee Swelling
+                    </label>
+
+
+                    <div class="radio-group">
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="swelling"
+                                value="Yes"
+                                required
+                            >
+
+                            Yes
+
+                        </label>
+
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="swelling"
+                                value="No"
+                            >
+
+                            No
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PREVIOUS INJURY -->
+
+                <div class="form-group">
+
+                    <label>
+                        Previous Knee Injury
+                    </label>
+
+
+                    <div class="radio-group">
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="previous_injury"
+                                value="Yes"
+                                required
+                            >
+
+                            Yes
+
+                        </label>
+
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="previous_injury"
+                                value="No"
+                            >
+
+                            No
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========================= -->
+                <!-- X-RAY UPLOAD -->
+                <!-- ========================= -->
+
+                <h2>
+                    3. Knee X-ray
+                </h2>
+
+
+                <p class="section-description">
+                    Upload a knee X-ray image for AI-assisted
+                    OA severity screening.
+                </p>
+
+
+                <div class="form-group">
+
+                    <label for="xray">
+                        Select Knee X-ray Image
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="xray"
+                        name="xray"
+                        accept=".jpg,.jpeg,.png"
+                        required
+                    >
+
+                </div>
+
+
+                <button type="submit">
+                    Analyze OA Screening
+                </button>
+
+
+            </form>
+
+
+            <!-- ========================= -->
+            <!-- AI RESULT -->
+            <!-- ========================= -->
+
+            {% if result %}
+
+
+                {% if result.error %}
+
+
+                    <div class="error">
+
+                        {{ result.error }}
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <div class="result">
+
+
+                        <h2>
+                            AI Screening Result
+                        </h2>
+
+
+                        <!-- XRAY RESULT -->
+
+                        <div class="result-card">
+
+                            <h3>
+                                🩻 X-ray AI Analysis
+                            </h3>
+
+
+                            <p>
+
+                                <strong>
+                                    OA Severity Class:
+                                </strong>
+
+                                {{ result.class_name }}
+
+                            </p>
+
+
+                            <p>
+
+                                <strong>
+                                    AI Confidence:
+                                </strong>
+
+                                {{ result.confidence }}%
+
+                            </p>
+
+
+                            <p>
+
+                                <strong>
+                                    Class ID:
+                                </strong>
+
+                                {{ result.class_id }}
+
+                            </p>
+
+                        </div>
+
+
+                        <!-- RISK RESULT -->
+
+                        <div class="result-card">
+
+                            <h3>
+                                🧠 Overall OA Risk Prediction
+                            </h3>
+
+
+                            <div class="risk-level">
+
+                                {{ result.risk_level }}
+
+                            </div>
+
+
+                            <p class="risk-confidence">
+
+                                Risk Confidence:
+                                {{ result.risk_confidence }}%
+
+                            </p>
+
+                        </div>
+
+
+                        <!-- RISK PROBABILITIES -->
+
+                        {% if result.risk_probabilities %}
+
+
+                            <div class="result-card">
+
+                                <h3>
+                                    Risk Probabilities
+                                </h3>
+
+
+                                {% for risk, probability in result.risk_probabilities.items() %}
+
+
+                                    <div class="probability">
+
+                                        <strong>
+                                            {{ risk }}
+                                        </strong>
+
+                                        — {{ probability }}%
+
+
+                                        <div class="probability-bar">
+
+                                            <div
+                                                class="probability-fill"
+                                                style="width: {{ probability }}%;"
+                                            ></div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                {% endfor %}
+
+                            </div>
+
+
+                        {% endif %}
+
+
+                        <div class="warning">
+
+                            <strong>
+                                Screening Support Only:
+                            </strong>
+
+                            This AI result is intended to support
+                            early screening and healthcare-worker
+                            decision making. It should not be treated
+                            as a final medical diagnosis.
+
+                        </div>
+
+
+                    </div>
+
+
+                {% endif %}
+
+
+            {% endif %}
+
+
+            <a
+                class="back"
+                href="/"
+            >
+                ← Back to Dashboard
+            </a>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

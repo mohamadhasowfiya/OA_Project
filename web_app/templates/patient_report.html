@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Patient Report - OA Screening System
+    </title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+
+        .main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+
+        .topbar h1 {
+            font-size: 28px;
+        }
+
+
+        .worker {
+            background: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+
+        .report {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+
+        .report-title {
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+
+        .report-title h2 {
+            font-size: 24px;
+        }
+
+
+        .report-title p {
+            margin-top: 8px;
+            color: #6b7280;
+        }
+
+
+        .section {
+            margin-bottom: 28px;
+        }
+
+
+        .section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #111827;
+        }
+
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+
+        .info-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+
+        .label {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+
+        .value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+
+        .result-box {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+
+        .result-box h4 {
+            margin-bottom: 12px;
+        }
+
+
+        .result-value {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+
+        .confidence {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        .risk-low {
+            color: #16a34a;
+        }
+
+
+        .risk-medium {
+            color: #d97706;
+        }
+
+
+        .risk-high {
+            color: #dc2626;
+        }
+
+
+        .questionnaire {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+
+        .questionnaire th,
+        .questionnaire td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+
+        .questionnaire th {
+            color: #6b7280;
+            font-size: 13px;
+            background: #f9fafb;
+        }
+
+
+        .guidance {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+
+        .guidance p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+
+        .button {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+        }
+
+
+        .back-button {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+
+        .save-button {
+            background: #2563eb;
+            color: white;
+        }
+
+
+        .save-button:hover {
+            background: #1d4ed8;
+        }
+
+
+        .print-button {
+            background: #111827;
+            color: white;
+        }
+
+
+        .print-button:hover {
+            background: #374151;
+        }
+
+
+        @media (max-width: 800px) {
+
+            .info-grid,
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .main {
+                padding: 20px;
+            }
+
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+        }
+
+
+        @media print {
+
+            body {
+                background: white;
+            }
+
+
+            .actions {
+                display: none;
+            }
+
+
+            .main {
+                padding: 0;
+                max-width: 100%;
+            }
+
+
+            .report {
+                border: none;
+                border-radius: 0;
+            }
+
+
+            .topbar {
+                margin-bottom: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<main class="main">
+
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <h1>
+            OA Screening Report
+        </h1>
+
+
+        <div class="worker">
+            Healthcare Worker
+        </div>
+
+    </div>
+
+
+    <!-- REPORT -->
+
+    <div class="report">
+
+
+        <!-- REPORT HEADER -->
+
+        <div class="report-title">
+
+            <h2>
+                Patient Screening Report
+            </h2>
+
+
+            <p>
+                AI-assisted osteoarthritis screening and risk assessment
+            </p>
+
+        </div>
+
+
+        <!-- PATIENT INFORMATION -->
+
+        <div class="section">
+
+            <h3>
+                Patient Information
+            </h3>
+
+
+            <div class="info-grid">
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Patient ID
+                    </div>
+
+                    <div class="value">
+                        {{ screening.patient_id }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Patient Name
+                    </div>
+
+                    <div class="value">
+                        {{ screening.patient_name }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Age
+                    </div>
+
+                    <div class="value">
+                        {{ screening.age }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Gender
+                    </div>
+
+                    <div class="value">
+                        {{ screening.gender }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Location
+                    </div>
+
+                    <div class="value">
+                        {{ screening.location }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Screening Date
+                    </div>
+
+                    <div class="value">
+                        {{ screening.created_at }}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- AI RESULTS -->
+
+        <div class="section">
+
+            <h3>
+                AI Screening Results
+            </h3>
+
+
+            <div class="result-grid">
+
+
+                <!-- X-RAY -->
+
+                <div class="result-box">
+
+                    <h4>
+                        X-ray Screening Result
+                    </h4>
+
+
+                    <div class="result-value">
+
+                        {{ screening.xray_class_name }}
+
+                    </div>
+
+
+                    <div class="confidence">
+
+                        Confidence:
+
+                        {% if screening.xray_confidence is not none %}
+
+                            {{ screening.xray_confidence }}%
+
+                        {% else %}
+
+                            Not Available
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- RISK -->
+
+                <div class="result-box">
+
+                    <h4>
+                        OA Risk Assessment
+                    </h4>
+
+
+                    <div
+                        class="
+                            result-value
+
+                            {% if screening.risk_level == 'High' %}
+
+                                risk-high
+
+                            {% elif screening.risk_level == 'Medium' %}
+
+                                risk-medium
+
+                            {% else %}
+
+                                risk-low
+
+                            {% endif %}
+                        "
+                    >
+
+                        {{ screening.risk_level }}
+
+                    </div>
+
+
+                    <div class="confidence">
+
+                        Confidence:
+
+                        {% if screening.risk_confidence is not none %}
+
+                            {{ screening.risk_confidence }}%
+
+                        {% else %}
+
+                            Not Available
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- QUESTIONNAIRE -->
+
+        <div class="section">
+
+            <h3>
+                Clinical Questionnaire Summary
+            </h3>
+
+
+            <table class="questionnaire">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Assessment
+                        </th>
+
+                        <th>
+                            Result
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <tr>
+
+                        <td>
+                            Pain Score
+                        </td>
+
+                        <td>
+                            {{ screening.pain_score }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Morning Stiffness
+                        </td>
+
+                        <td>
+                            {{ screening.morning_stiffness }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Walking Difficulty
+                        </td>
+
+                        <td>
+                            {{ screening.walking_difficulty }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Difficulty Using Stairs
+                        </td>
+
+                        <td>
+                            {{ screening.stairs_difficulty }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Knee Swelling
+                        </td>
+
+                        <td>
+                            {{ screening.swelling }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Previous Knee Injury
+                        </td>
+
+                        <td>
+                            {{ screening.previous_injury }}
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- PREVENTIVE GUIDANCE -->
+
+        <div class="section">
+
+            <h3>
+                Preventive Guidance
+            </h3>
+
+
+            <div class="guidance">
+
+
+                {% if screening.risk_level == "High" %}
+
+
+                    <p>
+
+                        <strong>
+                            High-risk screening result:
+                        </strong>
+
+                        The screening indicates a higher OA risk pattern.
+
+                    </p>
+
+
+                    <p>
+
+                        Consider referral to a qualified healthcare professional
+                        for further clinical evaluation.
+
+                    </p>
+
+
+                    <p>
+
+                        Preventive measures such as appropriate physical activity,
+                        weight management where appropriate, and joint-protective
+                        practices may be discussed with a healthcare professional.
+
+                    </p>
+
+
+                {% elif screening.risk_level == "Medium" %}
+
+
+                    <p>
+
+                        <strong>
+                            Medium-risk screening result:
+                        </strong>
+
+                        The screening indicates some OA-related risk markers.
+
+                    </p>
+
+
+                    <p>
+
+                        Consider follow-up assessment and preventive lifestyle
+                        guidance from a qualified healthcare professional.
+
+                    </p>
+
+
+                {% else %}
+
+
+                    <p>
+
+                        <strong>
+                            Low-risk screening result:
+                        </strong>
+
+                        The screening indicates relatively lower OA risk markers.
+
+                    </p>
+
+
+                    <p>
+
+                        Continue healthy movement and joint-protective practices
+                        and seek professional evaluation if symptoms persist
+                        or worsen.
+
+                    </p>
+
+
+                {% endif %}
+
+
+            </div>
+
+        </div>
+
+
+        <!-- DISCLAIMER -->
+
+        <div class="section">
+
+            <p
+                style="
+                    color:#6b7280;
+                    font-size:13px;
+                    line-height:1.6;
+                "
+            >
+
+                <strong>
+                    Important:
+                </strong>
+
+                This report is an AI-assisted screening and risk-assessment
+                support tool. It is not a final medical diagnosis.
+                Clinical decisions should be made by qualified healthcare
+                professionals using appropriate clinical evaluation.
+
+            </p>
+
+        </div>
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="actions">
+
+
+            <!-- BACK -->
+
+            <a
+                href="/reports"
+                class="button back-button"
+            >
+
+                ← Back to Reports
+
+            </a>
+
+
+            <!-- DIRECT PDF DOWNLOAD -->
+
+            <a
+                href="/download-report/{{ screening.id }}"
+                class="button save-button"
+            >
+
+                📄 Save Report
+
+            </a>
+
+
+            <!-- OPTIONAL PRINT -->
+
+            <button
+                type="button"
+                onclick="window.print()"
+                class="button print-button"
+            >
+
+                🖨 Print
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

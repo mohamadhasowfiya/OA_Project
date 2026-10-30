@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Screening History - OAScreen</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            width: 240px;
+            background: #172033;
+            color: white;
+            padding: 25px 15px;
+            flex-shrink: 0;
+        }
+
+
+        .logo {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 35px;
+            padding-left: 10px;
+        }
+
+
+        .logo span {
+            color: #6ee7b7;
+        }
+
+
+        .menu {
+            list-style: none;
+        }
+
+
+        .menu li {
+            margin-bottom: 8px;
+        }
+
+
+        .menu a {
+            display: block;
+            padding: 13px 14px;
+            border-radius: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+
+        .menu a:hover,
+        .menu a.active {
+            background: #26334d;
+            color: white;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main {
+            flex: 1;
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+
+        .topbar h1 {
+            font-size: 27px;
+        }
+
+
+        .worker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .page-header {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+
+        .page-header h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* ================= TABLE PANEL ================= */
+
+        .panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+
+        .panel-header h3 {
+            font-size: 18px;
+        }
+
+
+        .record-count {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+
+        /* ================= TABLE ================= */
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+
+
+        th,
+        td {
+            padding: 14px 10px;
+            text-align: left;
+            border-bottom: 1px solid #eef0f3;
+            font-size: 13px;
+        }
+
+
+        th {
+            color: #6b7280;
+            font-weight: normal;
+            background: #fafafa;
+        }
+
+
+        tr:hover td {
+            background: #fafafa;
+        }
+
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            padding: 45px;
+        }
+
+
+        /* ================= BADGES ================= */
+
+        .oa-badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        .risk-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        .risk-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+
+        .risk-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+
+        .risk-low {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+
+        .risk-na {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .new-screening {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        .new-screening:hover {
+            background: #1d4ed8;
+        }
+
+
+        .view-report {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 7px 11px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        .view-report:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 190px;
+            }
+
+            .topbar {
+                gap: 15px;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .layout {
+                display: block;
+            }
+
+
+            .sidebar {
+                width: 100%;
+            }
+
+
+            .main {
+                padding: 18px;
+            }
+
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            OA<span>Screen</span>
+        </div>
+
+
+        <ul class="menu">
+
+            <li>
+
+                <a href="/">
+                    Dashboard
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/screening">
+                    New Screening
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/patients">
+                    Patients
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a
+                    href="/history"
+                    class="active"
+                >
+                    Screening History
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/reports">
+                    Reports
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/sensor">
+                    Sensor Device
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+
+        <!-- ================= TOP BAR ================= -->
+
+        <div class="topbar">
+
+            <h1>
+                Screening History
+            </h1>
+
+
+            <div class="worker">
+
+                <div class="avatar">
+                    HW
+                </div>
+
+
+                <span>
+                    Healthcare Worker
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PAGE HEADER ================= -->
+
+        <section class="page-header">
+
+            <h2>
+                OA Screening Records
+            </h2>
+
+
+            <p>
+                View all previously completed osteoarthritis
+                screening records and AI-assisted results.
+            </p>
+
+        </section>
+
+
+        <!-- ================= HISTORY TABLE ================= -->
+
+        <section class="panel">
+
+
+            <div class="panel-header">
+
+                <h3>
+                    Screening History
+                </h3>
+
+
+                <div>
+
+                    <span class="record-count">
+                        {{ screenings|length }} records
+                    </span>
+
+                    &nbsp;&nbsp;
+
+                    <a
+                        href="/screening"
+                        class="new-screening"
+                    >
+                        + New Screening
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Patient ID
+                            </th>
+
+                            <th>
+                                Patient Name
+                            </th>
+
+                            <th>
+                                Age
+                            </th>
+
+                            <th>
+                                Gender
+                            </th>
+
+                            <th>
+                                Location
+                            </th>
+
+                            <th>
+                                Pain
+                            </th>
+
+                            <th>
+                                OA Result
+                            </th>
+
+                            <th>
+                                X-ray Confidence
+                            </th>
+
+                            <th>
+                                Risk
+                            </th>
+
+                            <th>
+                                Risk Confidence
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Report
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% if screenings %}
+
+
+                            {% for screening in screenings %}
+
+                            <tr>
+
+
+                                <td>
+                                    {{ screening.id }}
+                                </td>
+
+
+                                <td>
+                                    {{ screening.patient_id }}
+                                </td>
+
+
+                                <td>
+                                    {{ screening.patient_name }}
+                                </td>
+
+
+                                <td>
+                                    {{ screening.age }}
+                                </td>
+
+
+                                <td>
+                                    {{ screening.gender }}
+                                </td>
+
+
+                                <td>
+                                    {{ screening.location }}
+                                </td>
+
+
+                                <td>
+                                    {{ screening.pain_score }}/10
+                                </td>
+
+
+                                <td>
+
+                                    <span class="oa-badge">
+
+                                        {{ screening.xray_class_name }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    {% if screening.xray_confidence is not none %}
+
+                                        {{ screening.xray_confidence }}%
+
+                                    {% else %}
+
+                                        —
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+
+
+                                    {% if screening.risk_level == "High" %}
+
+                                        <span class="risk-badge risk-high">
+                                            High
+                                        </span>
+
+
+                                    {% elif screening.risk_level == "Medium" %}
+
+                                        <span class="risk-badge risk-medium">
+                                            Medium
+                                        </span>
+
+
+                                    {% elif screening.risk_level == "Low" %}
+
+                                        <span class="risk-badge risk-low">
+                                            Low
+                                        </span>
+
+
+                                    {% else %}
+
+                                        <span class="risk-badge risk-na">
+                                            Not Available
+                                        </span>
+
+                                    {% endif %}
+
+
+                                </td>
+
+
+                                <td>
+
+                                    {% if screening.risk_confidence is not none %}
+
+                                        {{ screening.risk_confidence }}%
+
+                                    {% else %}
+
+                                        —
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ screening.created_at }}
+
+                                </td>
+
+
+                                <td>
+
+                                    <a
+                                        href="/report/{{ screening.id }}"
+                                        class="view-report"
+                                    >
+                                        View Report
+                                    </a>
+
+                                </td>
+
+
+                            </tr>
+
+                            {% endfor %}
+
+
+                        {% else %}
+
+
+                            <tr>
+
+                                <td
+                                    colspan="13"
+                                    class="empty"
+                                >
+
+                                    No screening records available.
+
+                                </td>
+
+                            </tr>
+
+
+                        {% endif %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports - OA Screening System</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ---------------- SIDEBAR ---------------- */
+
+        .sidebar {
+            width: 240px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 35px;
+            padding-left: 12px;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin-bottom: 8px;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #4b5563;
+            padding: 12px 14px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .menu a:hover {
+            background: #f3f4f6;
+        }
+
+        .menu a.active {
+            background: #e8f0ff;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        /* ---------------- MAIN ---------------- */
+
+        .main {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+        }
+
+        .worker {
+            background: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* ---------------- HEADER ---------------- */
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            font-size: 22px;
+        }
+
+        .page-header p {
+            margin-top: 6px;
+            color: #6b7280;
+        }
+
+        .print-button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .print-button:hover {
+            background: #1d4ed8;
+        }
+
+        /* ---------------- STAT CARDS ---------------- */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        .card-title {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .card-value {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .low {
+            color: #16a34a;
+        }
+
+        .medium {
+            color: #d97706;
+        }
+
+        .high {
+            color: #dc2626;
+        }
+
+        /* ---------------- REPORT TABLE ---------------- */
+
+        .report-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .report-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .report-header h3 {
+            font-size: 18px;
+        }
+
+        .report-header p {
+            color: #6b7280;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 950px;
+        }
+
+        th {
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 13px;
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        /* ---------------- BADGES ---------------- */
+
+        .risk {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .risk-low {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .risk-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .risk-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .xray {
+            font-weight: 600;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px;
+            color: #6b7280;
+        }
+
+        /* ---------------- RESPONSIVE ---------------- */
+
+        @media (max-width: 1000px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        /* ---------------- PRINT ---------------- */
+
+        @media print {
+
+            .sidebar,
+            .topbar,
+            .print-button {
+                display: none;
+            }
+
+            .main {
+                padding: 0;
+            }
+
+            body {
+                background: white;
+            }
+
+            .card,
+            .report-card {
+                border: 1px solid #ddd;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            OA Screening
+        </div>
+
+        <ul class="menu">
+
+            <li>
+                <a href="/">
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/screening">
+                    New Screening
+                </a>
+            </li>
+
+            <li>
+                <a href="/patients">
+                    Patients
+                </a>
+            </li>
+
+            <li>
+                <a href="/history">
+                    Screening History
+                </a>
+            </li>
+
+            <li>
+                <a href="/reports" class="active">
+                    Reports
+                </a>
+            </li>
+
+            <li>
+                <a href="/sensor">
+                    Sensor Device
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <div class="topbar">
+
+            <h1>
+                Reports
+            </h1>
+
+            <div class="worker">
+                Healthcare Worker
+            </div>
+
+        </div>
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <div>
+
+                <h2>
+                    OA Screening Reports
+                </h2>
+
+                <p>
+                    Summary of screening activity and AI-assisted risk results
+                </p>
+
+            </div>
+
+            <button
+                class="print-button"
+                onclick="window.print()"
+            >
+                🖨 Print Report
+            </button>
+
+        </div>
+
+
+        <!-- ================= STATISTICS ================= -->
+
+        <div class="stats">
+
+
+            <div class="card">
+
+                <div class="card-title">
+                    Total Patients
+                </div>
+
+                <div class="card-value">
+                    {{ stats.total_patients }}
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-title">
+                    Total Screenings
+                </div>
+
+                <div class="card-value">
+                    {{ stats.total_screenings }}
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-title">
+                    Medium Risk
+                </div>
+
+                <div class="card-value medium">
+                    {{ stats.medium_risk }}
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-title">
+                    High Risk
+                </div>
+
+                <div class="card-value high">
+                    {{ stats.high_risk }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ================= SCREENING REPORT ================= -->
+
+        <div class="report-card">
+
+
+            <div class="report-header">
+
+                <h3>
+                    Screening Results
+                </h3>
+
+                <p>
+                    Complete record of OA screening assessments
+                </p>
+
+            </div>
+
+
+            {% if screenings %}
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Patient ID
+                            </th>
+
+                            <th>
+                                Patient Name
+                            </th>
+
+                            <th>
+                                Age
+                            </th>
+
+                            <th>
+                                Gender
+                            </th>
+
+                            <th>
+                                Location
+                            </th>
+
+                            <th>
+                                X-ray Result
+                            </th>
+
+                            <th>
+                                X-ray Confidence
+                            </th>
+
+                            <th>
+                                Risk Level
+                            </th>
+
+                            <th>
+                                Risk Confidence
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for row in screenings %}
+
+                        <tr>
+
+
+                            <td>
+
+                                <strong>
+                                    {{ row.patient_id }}
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+                                {{ row.patient_name }}
+                            </td>
+
+
+                            <td>
+                                {{ row.age }}
+                            </td>
+
+
+                            <td>
+                                {{ row.gender }}
+                            </td>
+
+
+                            <td>
+                                {{ row.location }}
+                            </td>
+
+
+                            <td class="xray">
+
+                                {% if row.xray_class_name %}
+
+                                    {{ row.xray_class_name }}
+
+                                {% else %}
+
+                                    Not Available
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if row.xray_confidence is not none %}
+
+                                    {{ row.xray_confidence }}%
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+
+                                {% if row.risk_level == "High" %}
+
+                                    <span class="risk risk-high">
+                                        High
+                                    </span>
+
+                                {% elif row.risk_level == "Medium" %}
+
+                                    <span class="risk risk-medium">
+                                        Medium
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="risk risk-low">
+                                        Low
+                                    </span>
+
+                                {% endif %}
+
+
+                            </td>
+
+
+                            <td>
+
+                                {% if row.risk_confidence is not none %}
+
+                                    {{ row.risk_confidence }}%
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+                                {{ row.created_at }}
+                            </td>
+                            <td>
+                                <a
+                                    href="/report/{{ row.id }}"
+                                    style="
+                                        display:inline-block;
+                                        padding:8px 12px;
+                                        background:#2563eb;
+                                        color:white;
+                                        text-decoration:none;
+                                        border-radius:6px;
+                                        font-size:13px;
+                                        font-weight:600;
+                                    "
+                                >
+                                    View Report
+                                </a>
+                            </td>
+
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+
+                <div class="empty">
+
+                    <h3>
+                        No Screening Records
+                    </h3>
+
+                    <p style="margin-top: 10px;">
+                        Complete a screening to generate a report.
+                    </p>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>OA Screening Dashboard</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            width: 240px;
+            background: #172033;
+            color: white;
+            padding: 25px 15px;
+        }
+
+
+        .logo {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 35px;
+            padding-left: 10px;
+        }
+
+
+        .logo span {
+            color: #6ee7b7;
+        }
+
+
+        .menu {
+            list-style: none;
+        }
+
+
+        .menu li {
+            margin-bottom: 8px;
+        }
+
+
+        .menu a {
+            display: block;
+            padding: 13px 14px;
+            border-radius: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+
+        .menu a:hover,
+        .menu a.active {
+            background: #26334d;
+            color: white;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main {
+            flex: 1;
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+
+        .topbar h1 {
+            font-size: 27px;
+        }
+
+
+        .worker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+
+        /* ================= WELCOME ================= */
+
+        .welcome {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #e5e7eb;
+        }
+
+
+        .welcome h2 {
+            margin-bottom: 8px;
+            font-size: 21px;
+        }
+
+
+        .welcome p {
+            color: #6b7280;
+            margin-bottom: 18px;
+        }
+
+
+        .start-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+
+        .start-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ================= STAT CARDS ================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            min-height: 145px;
+        }
+
+
+        .card-title {
+            color: #6b7280;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+
+        .card-value {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+
+        .card-note {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+
+        /* ================= CONTENT GRID ================= */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+
+        .panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+
+        .panel h3 {
+            margin-bottom: 18px;
+            font-size: 18px;
+        }
+
+
+        /* ================= TABLE ================= */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+
+        th,
+        td {
+            padding: 13px 10px;
+            text-align: left;
+            border-bottom: 1px solid #eef0f3;
+            font-size: 13px;
+        }
+
+
+        th {
+            color: #6b7280;
+            font-weight: normal;
+        }
+
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            padding: 30px;
+        }
+
+
+        /* ================= RISK BADGES ================= */
+
+        .risk-badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        .risk-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+
+        .risk-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+
+        .risk-low {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+
+        /* ================= DEVICE STATUS ================= */
+
+        .device {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eef0f3;
+            font-size: 14px;
+        }
+
+
+        .device:last-child {
+            border-bottom: none;
+        }
+
+
+        .status {
+            font-size: 12px;
+            font-weight: bold;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+
+        .status.offline {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+
+        /* ================= FOOTER NOTE ================= */
+
+        .note {
+            margin-top: 25px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 10px;
+            padding: 15px;
+            color: #9a3412;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 190px;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .layout {
+                display: block;
+            }
+
+
+            .sidebar {
+                width: 100%;
+            }
+
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+
+            .main {
+                padding: 18px;
+            }
+
+
+            .topbar {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            OA<span>Screen</span>
+        </div>
+
+
+        <ul class="menu">
+
+            <li>
+
+                <a
+                    href="/"
+                    class="active"
+                >
+                    Dashboard
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/screening">
+                    New Screening
+                </a>
+
+            </li>
+
+
+            <!-- PATIENTS - CONNECTED -->
+
+            <li>
+
+                <a href="/patients">
+                    Patients
+                </a>
+
+            </li>
+
+
+            <!-- SCREENING HISTORY -->
+
+            <li>
+
+                <a href="/history">
+                    Screening History
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/reports">
+                    Reports
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/sensor">
+                    Sensor Device
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main">
+
+
+        <!-- ================= TOP BAR ================= -->
+
+        <div class="topbar">
+
+            <h1>
+                Dashboard
+            </h1>
+
+
+            <div class="worker">
+
+                <div class="avatar">
+                    HW
+                </div>
+
+
+                <span>
+                    Healthcare Worker
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= WELCOME ================= -->
+
+        <section class="welcome">
+
+            <h2>
+                Welcome to OA Screening System
+            </h2>
+
+
+            <p>
+                AI-assisted screening support for early identification
+                of osteoarthritis risk markers.
+            </p>
+
+
+            <a
+                href="/screening"
+                class="start-btn"
+            >
+                + Start New Screening
+            </a>
+
+        </section>
+
+
+
+        <!-- ================= STAT CARDS ================= -->
+
+        <section class="cards">
+
+
+            <!-- TOTAL PATIENTS -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Total Patients
+                </div>
+
+
+                <div class="card-value">
+                    {{ stats.total_patients }}
+                </div>
+
+
+                <div class="card-note">
+                    Unique registered patients
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL SCREENINGS -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Screenings Completed
+                </div>
+
+
+                <div class="card-value">
+                    {{ stats.total_screenings }}
+                </div>
+
+
+                <div class="card-note">
+                    Records stored in database
+                </div>
+
+            </div>
+
+
+
+            <!-- MEDIUM RISK -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Medium Risk
+                </div>
+
+
+                <div class="card-value">
+                    {{ stats.medium_risk }}
+                </div>
+
+
+                <div class="card-note">
+                    Medium risk screenings
+                </div>
+
+            </div>
+
+
+
+            <!-- HIGH RISK -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    High Risk
+                </div>
+
+
+                <div class="card-value">
+                    {{ stats.high_risk }}
+                </div>
+
+
+                <div class="card-note">
+                    High risk screenings
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <section class="content-grid">
+
+
+            <!-- ================= RECENT SCREENINGS ================= -->
+
+            <div class="panel">
+
+                <h3>
+                    Recent Screenings
+                </h3>
+
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Patient ID
+                            </th>
+
+
+                            <th>
+                                Patient Name
+                            </th>
+
+
+                            <th>
+                                Age
+                            </th>
+
+
+                            <th>
+                                Gender
+                            </th>
+
+
+                            <th>
+                                OA Result
+                            </th>
+
+
+                            <th>
+                                Risk
+                            </th>
+
+
+                            <th>
+                                Confidence
+                            </th>
+
+
+                            <th>
+                                Date
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                        {% if stats.recent_screenings %}
+
+
+                            {% for screening in stats.recent_screenings %}
+
+                            <tr>
+
+
+                                <td>
+                                    {{ screening.patient_id }}
+                                </td>
+
+
+                                <td>
+                                    {{ screening.patient_name }}
+                                </td>
+
+
+                                <td>
+                                    {{ screening.age }}
+                                </td>
+
+
+                                <td>
+                                    {{ screening.gender }}
+                                </td>
+
+
+                                <td>
+                                    {{ screening.xray_class_name }}
+                                </td>
+
+
+                                <td>
+
+
+                                    {% if screening.risk_level == "High" %}
+
+                                        <span class="risk-badge risk-high">
+                                            High
+                                        </span>
+
+                                    {% elif screening.risk_level == "Medium" %}
+
+                                        <span class="risk-badge risk-medium">
+                                            Medium
+                                        </span>
+
+                                    {% elif screening.risk_level == "Low" %}
+
+                                        <span class="risk-badge risk-low">
+                                            Low
+                                        </span>
+
+                                    {% else %}
+
+                                        <span>
+                                            —
+                                        </span>
+
+                                    {% endif %}
+
+
+                                </td>
+
+
+                                <td>
+
+
+                                    {% if screening.risk_confidence %}
+
+                                        {{ screening.risk_confidence }}%
+
+                                    {% else %}
+
+                                        —
+
+                                    {% endif %}
+
+
+                                </td>
+
+
+                                <td>
+                                    {{ screening.created_at }}
+                                </td>
+
+
+                            </tr>
+
+                            {% endfor %}
+
+
+                        {% else %}
+
+
+                            <tr>
+
+                                <td
+                                    colspan="8"
+                                    class="empty"
+                                >
+                                    No screening records available.
+                                </td>
+
+                            </tr>
+
+
+                        {% endif %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+
+            <!-- ================= SENSOR DEVICE ================= -->
+
+            <div class="panel">
+
+                <h3>
+                    Sensor Device
+                </h3>
+
+
+                <div class="device">
+
+                    <span>
+                        Thigh IMU
+                    </span>
+
+                    <span class="status">
+                        Connected
+                    </span>
+
+                </div>
+
+
+                <div class="device">
+
+                    <span>
+                        Shank IMU
+                    </span>
+
+                    <span class="status">
+                        Connected
+                    </span>
+
+                </div>
+
+
+                <div class="device">
+
+                    <span>
+                        EMG
+                    </span>
+
+                    <span class="status offline">
+                        Not Connected
+                    </span>
+
+                </div>
+
+
+                <div class="device">
+
+                    <span>
+                        Pressure Sensor
+                    </span>
+
+                    <span class="status offline">
+                        Not Connected
+                    </span>
+
+                </div>
+
+
+                <div class="device">
+
+                    <span>
+                        ESP32
+                    </span>
+
+                    <span class="status offline">
+                        Not Connected
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= DISCLAIMER ================= -->
+
+        <div class="note">
+
+            <strong>
+                Screening Support:
+            </strong>
+
+            This system provides AI-assisted osteoarthritis screening
+            support based on available clinical information and X-ray
+            analysis. It is not intended to provide a final medical
+            diagnosis. Clinical assessment by a qualified healthcare
+            professional is required.
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>
