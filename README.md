@@ -1,32 +1,85 @@
-# OA X-ray Sample Dataset
+# AI-Assisted Osteoarthritis (OA) Screening System
 
-This folder contains information about the dataset used in the Osteoarthritis Screening Project.
+## Project Overview
 
-## Dataset Information
+This project is an AI-assisted screening system designed to identify potential knee osteoarthritis (OA) severity levels using X-ray images and patient health information.
 
-- Dataset: Knee Osteoarthritis Dataset with Severity Grading
-- Source: Kaggle
-- Original dataset: [Mendeley Data](https://data.mendeley.com/datasets/56rmx5bjcr)
-- Image classification: Kellgren-Lawrence (KL) grades 0–4
+The system combines Deep Learning and Machine Learning techniques to support early screening and risk assessment.
 
-## Class Mapping
+## Technologies Used
 
-| Folder | Class |
-|---|---|
-| 0 | Healthy |
-| 1 | Doubtful |
-| 2 | Minimal |
-| 3 | Moderate |
-| 4 | Severe |
+- Python
+- TensorFlow
+- MobileNetV2
+- LightGBM
+- Flask
+- HTML and CSS
+- SQLite
 
-## Download
+## Key Features
 
-[Kaggle Dataset](https://www.kaggle.com/datasets/shashwatwork/knee-osteoarthritis-dataset-with-severity)
+- Knee X-ray image classification.
+- OA severity classification into five categories.
+- Patient health questionnaire.
+- AI-assisted risk prediction.
+- Patient screening history.
+- Screening reports.
+- Risk assessment dashboard.
 
-Please check the dataset's current licence and usage conditions before downloading or redistributing images.
+## Model Information
 
-**Note:** The original X-ray images are not included in this GitHub repository.
+**Deep Learning:** MobileNetV2 for X-ray image classification.
+
+**Machine Learning:** LightGBM for patient risk assessment using health and questionnaire features.
+
+## Dataset
+
+The project uses a knee osteoarthritis X-ray dataset with five Kellgren-Lawrence severity classes.
+
+The original dataset is not included in this repository.
+
+Dataset source: [Kaggle – Knee Osteoarthritis Dataset](https://www.kaggle.com/datasets/shashwatwork/knee-osteoarthritis-dataset-with-severity)
+
+## Project Structure
+
+```text
+OA_Project/
+├── web_app/
+│   ├── templates/
+│   ├── app.py
+│   ├── database.py
+│   ├── model_predict.py
+│   └── risk_predict.py
+├── mobilenetv2_oa_model.keras
+├── mobilenetv2_best.keras
+├── lightgbm_oa_risk_model.pkl
+├── requirements.txt
+├── sample_dataset/
+└── README.md
+```
+
+## Installation
+
+1. Clone this repository.
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the Flask application:
+
+```bash
+cd web_app
+python app.py
+```
+
+4. Open your browser at:
+
+```text
+http://127.0.0.1:5000
+```
 
 ## Disclaimer
 
-This project is an AI-assisted screening prototype and is not intended to provide a final medical diagnosis.
+This project is an AI-assisted screening and risk-assessment prototype. It is not a final medical diagnosis. Clinical decisions should be made by qualified healthcare professionals.
