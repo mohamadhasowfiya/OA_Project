@@ -1,0 +1,18 @@
+# Python environment
+__pycache__/
+*.pyc
+web_app/venv/
+
+# Private application data
+web_app/uploads/
+web_app/oa_screening.db
+web_app/test_xray.jpg
+
+# Original large datasets
+/train/
+/val/
+/test/
+/auto_test/
+
+# Temporary files
+*.lnk
