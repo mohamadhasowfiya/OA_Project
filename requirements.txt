@@ -1,0 +1,9 @@
+Flask
+tensorflow
+numpy
+pandas
+joblib
+lightgbm
+Pillow
+scikit-learn
+reportlab
